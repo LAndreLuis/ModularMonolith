@@ -1,1 +1,7 @@
-<Solution />
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Catalog/">
+    <Project Path="Modules.Catalog/Modules.Catalog.csproj" Id="36411e62-0645-45de-a8ed-21664c484064" />
+  </Folder>
+</Solution>
