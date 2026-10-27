@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/Host/">
+    <Project Path="Modules.Api/Modules.Api.csproj" Id="899e1fad-bd73-4ab1-8b40-12c75cfc7bdb" />
+  </Folder>
   <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Catalog/">
     <Project Path="Modules.Catalog/Modules.Catalog.csproj" Id="36411e62-0645-45de-a8ed-21664c484064" />
