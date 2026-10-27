@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Modules.Catalog.Domain
+﻿namespace Modules.Catalog.Domain
 {
-    internal class Product
+    public class Product
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+
     }
 }
