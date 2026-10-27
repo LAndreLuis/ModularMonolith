@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Modules.Catalog.Domain
+﻿namespace Modules.Catalog.Domain
 {
-    internal class Product
+    public class Product
     {
+        public int Id { get; set; }
     }
 }
