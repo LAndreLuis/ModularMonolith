@@ -12,9 +12,9 @@ namespace Modules.Catalog.Data.Configuration
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("Products");
-            builder.Property(p => p.Id).HasColumnName("Id");
-            builder.Property(p => p.Name).HasColumnName("Name").IsRequired();
-            builder.Property(p => p.Price).HasColumnName("Price").HasColumnType("decimal(18,2)");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Name).IsRequired().HasMaxLength(200);
+            builder.Property(p => p.Price).HasColumnType("decimal(18,2)");
         }
     }
 }

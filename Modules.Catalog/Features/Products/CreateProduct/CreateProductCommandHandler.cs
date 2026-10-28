@@ -1,6 +1,6 @@
 ﻿using Modules.Catalog.Data;
 using Modules.Catalog.Domain;
-using static Modules.Catalog.ICommands.ICommands;
+using Modules.Catalog.Abstractions;
 
 namespace Modules.Catalog.Features.Products.CreateProduct
 {

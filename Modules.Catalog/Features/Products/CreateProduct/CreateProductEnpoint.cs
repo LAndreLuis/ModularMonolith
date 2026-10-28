@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using static Modules.Catalog.ICommands.ICommands;
+using Modules.Catalog.Abstractions;
 
 namespace Modules.Catalog.Features.Products.CreateProduct
 {
