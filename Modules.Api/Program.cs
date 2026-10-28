@@ -12,7 +12,7 @@ builder.Services.AddOpenApi();
 
 
 builder.Services.AddDbContext<Modules.Catalog.Data.CatalogDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("teste")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("teste")));
 
 builder.Services.AddScoped<
     Modules.Catalog.ICommands.ICommands.ICommandHandler<

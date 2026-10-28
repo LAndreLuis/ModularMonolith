@@ -10,10 +10,10 @@ namespace Modules.Catalog.Features.Products.CreateProduct
         
         internal static void MapCreateProductEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/products", async (CreateProductCommand command, ICommandHandler<CreateProductCommand, Guid> handler) =>
+            app.MapPost("/products", async (CreateProductCommand command, ICommandHandler<CreateProductCommand, Guid> handler) =>
             {
                 var productId = await handler.HandleAsync(command);
-                return Results.Created($"/api/products/{productId}", new { Id = productId });
+                return Results.Created($"/products/{productId}", new { Id = productId });
             });
         }
     }
