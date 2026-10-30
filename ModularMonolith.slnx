@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/BuildingBlocks/">
+    <Project Path="Shared/Shared.csproj" Id="78b37f7b-dcc1-4eb2-980d-25d97a231d70" />
+  </Folder>
   <Folder Name="/src/Host/">
     <Project Path="Modules.Api/Host.Api.csproj" Id="899e1fad-bd73-4ab1-8b40-12c75cfc7bdb" />
   </Folder>
@@ -7,7 +10,5 @@
   <Folder Name="/src/Modules/Catalog/">
     <Project Path="Modules.Catalog/Modules.Catalog.csproj" Id="36411e62-0645-45de-a8ed-21664c484064" />
   </Folder>
-  <Folder Name="/src/Modules/Identity/">
-    <Project Path="Modules.Identity/Modules.Identity.csproj" Id="c649b8e6-74c9-4cf5-b2ad-130a3b1dc8f3" />
-  </Folder>
+  <Folder Name="/src/Modules/Identity/" />
 </Solution>

@@ -1,17 +1,13 @@
-﻿using Finbuckle.MultiTenant.Abstractions;
-using Finbuckle.MultiTenant.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Modules.Catalog.Domain;
 
 namespace Modules.Catalog.Data
 {
-    public sealed class CatalogDbContext : MultiTenantDbContext
+    public sealed class CatalogDbContext : DbContext
     {
         public const string Schema = "Catalog";
-        public CatalogDbContext(
-         IMultiTenantContextAccessor multiTenantContextAccessor,
-         DbContextOptions<CatalogDbContext> options)
-         : base(multiTenantContextAccessor, options) { }
+        public CatalogDbContext(DbContextOptions<CatalogDbContext> options)
+         : base( options) { }
 
         public DbSet<Product> Products => Set<Product>();
 

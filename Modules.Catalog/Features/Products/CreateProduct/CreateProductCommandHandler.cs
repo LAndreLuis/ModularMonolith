@@ -1,12 +1,12 @@
-﻿using Modules.Catalog.Data;
+﻿using BuildingBlocks.Shared.Command;
+using Modules.Catalog.Data;
 using Modules.Catalog.Domain;
-using Modules.Catalog.Abstractions;
 
 namespace Modules.Catalog.Features.Products.CreateProduct
 {
     public sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, Guid>
     {
-        private CatalogDbContext _context;
+        private readonly CatalogDbContext _context;
 
         public CreateProductCommandHandler(CatalogDbContext context)
         {
