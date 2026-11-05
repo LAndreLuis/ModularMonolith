@@ -1,33 +1,37 @@
-﻿using BuildingBlocks.Shared.Command;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.Command
+namespace BuildingBlocks.Shared.Command;
+
+public interface ICommandDispatcher
 {
-    public interface ICommandDispatcher
+    Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken ct = default);
+}
+
+public sealed class CommandDispatcher : ICommandDispatcher
+{
+    private readonly IServiceProvider _serviceProvider;
+
+    public CommandDispatcher(IServiceProvider serviceProvider)
     {
-        Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken ct = default);
+        _serviceProvider = serviceProvider;
     }
 
-    public sealed class CommandDispatcher : ICommandDispatcher
+    public Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken ct = default)
     {
-        private readonly IServiceProvider _serviceProvider;
+        ArgumentNullException.ThrowIfNull(command);
 
-        public CommandDispatcher(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        // 1. Tipo CONCRETO do command (CreateProductCommand, DeleteProductCommand, ...)
+        var commandType = command.GetType();
 
-        public Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken ct = default)
-        {
-            var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
-            var handler = _serviceProvider.GetService(handlerType);
+        // 2. Tipo do handler: ICommandHandler<CreateProductCommand, Guid>
+        var handlerType = typeof(ICommandHandler<,>)
+            .MakeGenericType(commandType, typeof(TResult));
 
-            if (handler is null)
-            {
-                throw new InvalidOperationException($"Nenhum handler foi registado para {command.GetType().Name}");
-            }
+        // 3. Resolve do DI
+        var handler = _serviceProvider.GetRequiredService(handlerType);
 
-            
-            return ((dynamic)handler).HandleAsync((dynamic)command, ct);
-        }
+        // 4. Chama HandleAsync via reflection
+        var method = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync))!;
+        return (Task<TResult>)method.Invoke(handler, new object[] { command, ct })!;
     }
-    }
+}

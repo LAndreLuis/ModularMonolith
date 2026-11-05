@@ -33,7 +33,10 @@ namespace Modules.Catalog
         {
            
             services.AddDbContext<CatalogDbContext>(o =>
-                o.UseSqlServer(config.GetConnectionString("Catalog")));
+                o.UseSqlServer(config.GetConnectionString("Catalog"), sqlserverOptions => 
+                sqlserverOptions.EnableRetryOnFailure(maxRetryCount: 3, 
+                maxRetryDelay: TimeSpan.FromSeconds(5), 
+                errorNumbersToAdd: null)).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services.AddCommandDispatcher();
             services.AddCommandHandlers(typeof(CatalogModule).Assembly);

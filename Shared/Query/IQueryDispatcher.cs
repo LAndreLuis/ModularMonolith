@@ -1,4 +1,5 @@
-﻿using Shared.Query;
+﻿using BuildingBlocks.Shared.Query;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BuildingBlocks.Shared.Query;
 
@@ -18,14 +19,14 @@ public sealed class QueryDispatcher : IQueryDispatcher
 
     public Task<TResult> SendAsync<TResult>(IQuery<TResult> query, CancellationToken ct = default)
     {
-        var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
-        var handler = _serviceProvider.GetService(handlerType);
+        ArgumentNullException.ThrowIfNull(query);
 
-        if (handler is null)
-        {
-            throw new InvalidOperationException($"Nenhum query handler foi registado para {query.GetType().Name}");
-        }
+        var queryType = query.GetType();
+        var handlerType = typeof(IQueryHandler<,>)
+            .MakeGenericType(queryType, typeof(TResult));
 
-        return ((dynamic)handler).HandleAsync((dynamic)query, ct);
+        var handler = _serviceProvider.GetRequiredService(handlerType);
+        var method = handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync))!;
+        return (Task<TResult>)method.Invoke(handler, new object[] { query, ct })!;
     }
 }

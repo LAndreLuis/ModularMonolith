@@ -1,4 +1,4 @@
-﻿using Shared.Query;
+﻿using BuildingBlocks.Shared.Query;
 
 namespace Modules.Catalog.Features.Products.GetByIdProduct
 {

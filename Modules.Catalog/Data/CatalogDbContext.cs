@@ -13,9 +13,10 @@ namespace Modules.Catalog.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema(Schema);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogDbContext).Assembly);
-            base.OnModelCreating(modelBuilder);
         }
 
 

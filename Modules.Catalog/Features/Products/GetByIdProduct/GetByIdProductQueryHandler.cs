@@ -1,5 +1,5 @@
-﻿using Modules.Catalog.Data;
-using Shared.Query;
+﻿using BuildingBlocks.Shared.Query;
+using Modules.Catalog.Data;
 
 namespace Modules.Catalog.Features.Products.GetByIdProduct
 {

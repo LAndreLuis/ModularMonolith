@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BuildingBlocks.Shared.Query;
+using Microsoft.EntityFrameworkCore;
 using Modules.Catalog.Data;
-using Shared.Query;
 
 namespace Modules.Catalog.Features.Products.GetAllProduct
 {
@@ -17,6 +17,7 @@ namespace Modules.Catalog.Features.Products.GetAllProduct
         {
 
             return await _context.Products
+                //.Where(p => p.TenantId == query.TenantId)
             .AsNoTracking()
             .Select(p => new GetAllProductDto(p.Id, p.Name, p.Price))
             .ToListAsync(ct);

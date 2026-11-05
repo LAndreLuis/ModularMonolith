@@ -1,4 +1,4 @@
-﻿namespace Shared.Query
+﻿namespace BuildingBlocks.Shared.Query
 {
    
     public interface IQuery<out TResult> { }

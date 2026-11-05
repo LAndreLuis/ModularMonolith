@@ -21,6 +21,7 @@ namespace Modules.Catalog.Features.Products.UpdateProduct
             product.Name = command.Name;
             product.Price = command.Price;
 
+            _context.Update(product);
             await _context.SaveChangesAsync(ct);
             return new UpdateProductDto(product.Name, product.Price);
         }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Modules.Catalog.Domain;
 
-namespace Modules.Catalog.Data.Configuration
+namespace Modules.Catalog.Data.Configurations
 {
     public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
     {

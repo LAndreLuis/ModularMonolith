@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using BuildingBlocks.Shared.Command;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Shared.Command;
 
 namespace Modules.Catalog.Features.Products.DeleteProduct
 {
