@@ -12,15 +12,14 @@ using Modules.Catalog.Data;
 namespace Modules.Catalog.Data.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20261028180854_InitialCreate2")]
-    partial class InitialCreate2
+    [Migration("20261110204506_InitialSql1")]
+    partial class InitialSql1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Catalog")
                 .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -38,6 +37,7 @@ namespace Modules.Catalog.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TenantId")
@@ -46,7 +46,7 @@ namespace Modules.Catalog.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", "Catalog");
+                    b.ToTable("Products", (string)null);
                 });
 #pragma warning restore 612, 618
         }

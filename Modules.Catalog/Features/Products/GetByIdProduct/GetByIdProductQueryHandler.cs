@@ -1,22 +1,29 @@
 ﻿using BuildingBlocks.Shared.Query;
 using Modules.Catalog.Data;
 
-namespace Modules.Catalog.Features.Products.GetByIdProduct
-{
-    public sealed class GetByIdProductQueryHandler : IQueryHandler<GetByIdProductQuery, GetByIdProductDto>
-    {
-        private readonly CatalogDbContext _context;
-        public GetByIdProductQueryHandler(CatalogDbContext context)
-        {
-            _context = context;
-        }
-        public async Task<GetByIdProductDto> HandleAsync(GetByIdProductQuery query, CancellationToken ct = default)
-        {
-            var product = await _context.Products.FindAsync(query.Id, ct);
-            if (product == null)
-                throw new InvalidOperationException("Product not found");
+namespace Modules.Catalog.Features.Products.GetByIdProduct;
 
-            return new GetByIdProductDto(product.Id, product.Name, product.Price);
+public sealed class GetByIdProductQueryHandler
+    : IQueryHandler<GetByIdProductQuery, GetByIdProductDto>
+{
+    private readonly CatalogDbContext _context;
+
+    public GetByIdProductQueryHandler(CatalogDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<GetByIdProductDto> HandleAsync(
+        GetByIdProductQuery query,
+        CancellationToken ct = default)
+    {
+        await foreach (var product in ProductCompiledQueries
+            .GetById(_context, query.Id)
+            .WithCancellation(ct))
+        {
+            return product;
         }
+
+        throw new ProductNotFoundException(query.Id);
     }
 }

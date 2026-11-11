@@ -3,7 +3,7 @@
 namespace Modules.Catalog.Features.Products.GetAllProduct
 {
 
-    public record GetAllProductDto(Guid Id, string Name, decimal Price);
-    public record GetAllProductQuery : IQuery<IEnumerable<GetAllProductDto>>;
+    public sealed record GetAllProductDto(Guid Id, string Name, decimal Price);
+    public sealed record GetAllProductQuery : IQuery<IEnumerable<GetAllProductDto>>;
     
 }

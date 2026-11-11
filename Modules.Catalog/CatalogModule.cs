@@ -31,20 +31,34 @@ namespace Modules.Catalog
     this IServiceCollection services,
     IConfiguration config)
         {
-           
-            services.AddDbContext<CatalogDbContext>(o =>
-                o.UseSqlServer(config.GetConnectionString("Catalog"), sqlserverOptions => 
-                sqlserverOptions.EnableRetryOnFailure(maxRetryCount: 3, 
-                maxRetryDelay: TimeSpan.FromSeconds(5), 
-                errorNumbersToAdd: null)).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            var connectionString =
+                config.GetConnectionString("Catalog");
 
-            services.AddCommandDispatcher();
-            services.AddCommandHandlers(typeof(CatalogModule).Assembly);
+            services.AddDbContextPool<CatalogDbContext>(
+                options =>
+                {
+                    options.UseSqlServer(connectionString);
 
+                    options.UseQueryTrackingBehavior(
+                        QueryTrackingBehavior.NoTracking);
+
+                   
+                },
+                poolSize: 128
+
+
+                );
+
+            services.AddMemoryCache();
             services.AddQueryDispatcher();
             services.AddQueryHandlers(typeof(CatalogModule).Assembly);
 
-
+            services.AddCommandDispatcher();
+            services.AddCommandHandlers(typeof(CatalogModule).Assembly);
+            
+            services.AddScoped<
+    IQueryHandler<GetAllProductQuery, IEnumerable<GetAllProductDto>>,
+    GetAllProductQueryHandler>();
 
             return services;
         }

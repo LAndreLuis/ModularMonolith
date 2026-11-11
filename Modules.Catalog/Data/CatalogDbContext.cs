@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Modules.Catalog.Domain;
 
+
 namespace Modules.Catalog.Data
 {
     public sealed class CatalogDbContext : DbContext
@@ -13,7 +14,7 @@ namespace Modules.Catalog.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+         
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema(Schema);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogDbContext).Assembly);

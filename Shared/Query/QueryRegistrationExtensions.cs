@@ -8,15 +8,22 @@ public static class QueryRegistrationExtensions
     
     public static IServiceCollection AddQueryHandlers(this IServiceCollection services, Assembly assembly)
     {
-        var handlerTypes = assembly.GetTypes()
-            .Where(t => !t.IsAbstract && !t.IsInterface)
-            .SelectMany(t => t.GetInterfaces(), (type, interfaceType) => new { type, interfaceType })
-            .Where(x => x.interfaceType.IsGenericType &&
-                       x.interfaceType.GetGenericTypeDefinition() == typeof(IQueryHandler<,>));
-
-        foreach (var handler in handlerTypes)
+        foreach (var type in assembly.GetTypes())
         {
-            services.AddScoped(handler.interfaceType, handler.type);
+            if (type.IsAbstract || type.IsInterface)
+                continue;
+
+            foreach (var interfaceType in type.GetInterfaces())
+            {
+                if (!interfaceType.IsGenericType)
+                    continue;
+
+                if (interfaceType.GetGenericTypeDefinition()
+                    != typeof(IQueryHandler<,>))
+                    continue;
+
+                services.AddScoped(interfaceType, type);
+            }
         }
 
         return services;

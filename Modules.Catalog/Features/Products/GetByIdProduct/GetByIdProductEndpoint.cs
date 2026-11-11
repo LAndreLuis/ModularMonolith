@@ -3,18 +3,26 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Modules.Catalog.Features.Products.GetByIdProduct
-{
-    public static class GetByIdProductEndpoint
-    {
+namespace Modules.Catalog.Features.Products.GetByIdProduct;
 
-        internal static void MapGetByIdProductEndpoint(this IEndpointRouteBuilder app)
+public static class GetByIdProductEndpoint
+{
+    internal static void MapGetByIdProductEndpoint(this IEndpointRouteBuilder app)
+    {
+        app.MapGet("/products/{id:guid}", async (
+            Guid id,
+            IQueryDispatcher dispatcher,
+            CancellationToken ct) =>
         {
-            app.MapGet("/products/{id:guid}", async (Guid id, IQueryDispatcher dispatcher, CancellationToken ct) =>
+            try
             {
                 var result = await dispatcher.SendAsync(new GetByIdProductQuery(id), ct);
                 return Results.Ok(result);
-            });
-        }
+            }
+            catch (ProductNotFoundException)
+            {
+                return Results.NotFound();
+            }
+        });
     }
 }

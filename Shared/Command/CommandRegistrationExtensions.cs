@@ -2,30 +2,42 @@
 using BuildingBlocks.Shared.Command;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.Command
+namespace Shared.Command;
+
+public static class CommandRegistrationExtensions
 {
-    public static class CommandRegistrationExtensions
+    public static IServiceCollection AddCommandHandlers(
+        this IServiceCollection services,
+        Assembly assembly)
     {
-        public static IServiceCollection AddCommandHandlers(this IServiceCollection services, Assembly assembly)
-        {
-            var handlerTypes = assembly.GetTypes()
-            .Where(t => !t.IsAbstract && !t.IsInterface)
-            .SelectMany(t => t.GetInterfaces(), (type, interfaceType) => new { type, interfaceType })
-            .Where(x => x.interfaceType.IsGenericType &&
-                       x.interfaceType.GetGenericTypeDefinition() == typeof(ICommandHandler<,>));
+        ArgumentNullException.ThrowIfNull(assembly);
 
-            foreach (var handler in handlerTypes)
+        foreach (var type in assembly.GetTypes())
+        {
+            if (!type.IsClass || type.IsAbstract)
+                continue;
+
+            foreach (var interfaceType in type.GetInterfaces())
             {
-                services.AddScoped(handler.interfaceType, handler.type);
+                if (!interfaceType.IsGenericType)
+                    continue;
+
+                if (interfaceType.GetGenericTypeDefinition() !=
+                    typeof(ICommandHandler<,>))
+                    continue;
+
+                services.AddScoped(interfaceType, type);
             }
-
-            return services;
         }
 
-        public static IServiceCollection AddCommandDispatcher(this IServiceCollection services)
-        {
-            services.AddScoped<ICommandDispatcher, CommandDispatcher>();
-            return services;
-        }
+        return services;
+    }
+
+    public static IServiceCollection AddCommandDispatcher(
+        this IServiceCollection services)
+    {
+        services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+
+        return services;
     }
 }
